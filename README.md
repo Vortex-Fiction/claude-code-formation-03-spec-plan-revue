@@ -6,7 +6,7 @@ A small library app (books, authors, loans) used for the phase 3 exercises. The 
 
 Install these tools before the session. You need Node.js 22.13 or later. On Windows, use an x64 computer: the SQLite driver has no Windows ARM build.
 
-On Windows, first allow PowerShell to run the npm and Claude Code launchers (once per user):
+On Windows, first allow PowerShell to run the npm launcher (once per user):
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
@@ -19,6 +19,8 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 | GitHub CLI  | `brew install gh`                 | `winget install GitHub.cli`           |
 | Claude Code | `brew install --cask claude-code` | `winget install Anthropic.ClaudeCode` |
 
+Close and open your terminal again after the installation, so that it finds the new commands.
+
 Then, on both systems:
 
 ```bash
@@ -27,8 +29,6 @@ claude
 ```
 
 `claude` asks you to sign in the first time.
-
-Close and open your terminal again after the installation, so that it finds the new commands.
 
 The exercises use the `superpowers` plugin. Install it in Claude Code during the session:
 
@@ -44,6 +44,11 @@ cd claude-code-formation-03-spec-plan-revue
 npm install
 npm run back
 ```
+
+`npm install` can show two messages. Both are known, and you do not have to do anything:
+
+- 13 moderate vulnerabilities. They are in the ESLint tools, which are development tools only. Do not run `npm audit fix --force`: it installs an old ESLint version that breaks the lint.
+- npm blocked the install scripts of `esbuild` and `fsevents`. The app and the tests work without these scripts.
 
 In a second terminal:
 
@@ -65,7 +70,7 @@ npm run lint
 npm run lint:doc
 ```
 
-`npm run test:coverage` runs the backend tests with coverage. It fails when lines, branches, functions or statements go below 100 %. It does not count `main.ts`, `db/database.module.ts` and `db/seed.ts`: `npm run back` runs them.
+`npm run test:coverage` runs the backend tests with coverage. It fails when lines, branches, functions or statements go below 100 %. It does not count `main.ts`, `db/database.module.ts` and `db/seed.ts`: `npm run back` runs the first two, and the seed has an error branch that no valid seed reaches.
 
 `npm run lint:doc` checks each `README.md` and `CLAUDE.md`, the tickets in `tickets/`, and the specs and plans in `docs/superpowers/` with Vale and the Simplified Technical English rules in `.vale/`. `npm install` downloads Vale. If `npm run lint:doc` tells you that Vale is missing, run `npm rebuild @vvago/vale`.
 
