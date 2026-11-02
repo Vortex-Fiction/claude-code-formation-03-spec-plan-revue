@@ -20,7 +20,7 @@ npm audit --omit=dev
 
 ### Couche 2 — l'agent se relit
 
-1. Dans la session, lancez `/code-review`.
+1. Dans la session, lancez `/code-review main...HEAD` : la revue couvre tous les commits de la branche, pas seulement les changements non commités.
 2. Pour chaque point trouvé, demandez à Claude de le vérifier (relire le code, écrire un test qui le montre) avant de corriger. Il a le droit de contester un point, avec une preuve.
 
 ### Couche 3 — vous relisez l'agent
@@ -37,7 +37,8 @@ npm audit --omit=dev
    - un test vide, ou qui ne vérifie rien.
 4. Classez chaque commentaire :
    - « écart à la spec » : le code ne fait pas ce que la spec dit → corrigez le code ;
-   - « trou dans la spec » : la spec ne disait rien → complétez d'abord la spec, puis le code.
+   - « trou dans la spec » : la spec ne disait rien → complétez d'abord la spec, puis le code ;
+   - « préférence » : ni l'un ni l'autre → discutez-la ou laissez-la, sans commit.
 5. Une correction = un commit. Relancez la couche 1 après.
 
 ### La PR
@@ -51,5 +52,5 @@ npm audit --omit=dev
 
 - La PR existe sur votre fork.
 - Sa description renvoie à la spec.
-- Chaque commentaire de revue est classé « écart à la spec » ou « trou dans la spec », et sa correction est dans un commit.
+- Chaque commentaire de revue est classé « écart à la spec », « trou dans la spec » ou « préférence ». Chaque écart et chaque trou a sa correction dans un commit.
 - Les cinq commandes de la couche 1 sont vertes sur la branche de la PR.
