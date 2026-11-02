@@ -22,5 +22,6 @@ export const loans = sqliteTable('loans', {
     .references(() => books.id),
   borrower: text('borrower').notNull(),
   borrowedAt: text('borrowed_at').notNull(),
+  dueDate: text('due_date').notNull(),
   returnedAt: text('returned_at'),
 });

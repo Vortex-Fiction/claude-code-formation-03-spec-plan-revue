@@ -9,7 +9,7 @@ The TypeScript types that the API and the app share. The lib has no runtime code
 - `Author` — a person who wrote one or more books.
 - `Book` — a book, with its ISBN and its availability.
 - `BookWithAuthor` — a `Book` with the name of its author. `GET /api/books` returns this type.
-- `Loan` — a book that a borrower borrows. `returnedAt` is `null` until the borrower returns the book.
+- `Loan` — a book that a borrower borrows. `dueDate` is a `YYYY-MM-DD` day in UTC, 14 days after the borrow day. `returnedAt` is `null` until the borrower returns the book.
 
 ## Usage
 

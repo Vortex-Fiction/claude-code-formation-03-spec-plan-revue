@@ -2,6 +2,7 @@ import { BadRequestException, ConflictException, NotFoundException } from '@nest
 import { beforeEach, describe, expect, it } from 'vitest';
 import { BooksService } from '../books/books.service';
 import { createDatabase } from '../db/database';
+import { getDueDate } from './due-date';
 import { LoansService } from './loans.service';
 
 describe('LoansService', () => {
@@ -21,6 +22,11 @@ describe('LoansService', () => {
     const loan = await loansService.borrow({ bookId, borrower: 'Ada' });
     expect(loan.returnedAt).toBeNull();
     expect((await booksService.getById(bookId)).isAvailable).toBe(false);
+  });
+
+  it('borrows a book with a due date 14 days after the borrow day', async () => {
+    const loan = await loansService.borrow({ bookId, borrower: 'Ada' });
+    expect(loan.dueDate).toBe(getDueDate(new Date(loan.borrowedAt)));
   });
 
   it('rejects borrowing an unavailable book', async () => {

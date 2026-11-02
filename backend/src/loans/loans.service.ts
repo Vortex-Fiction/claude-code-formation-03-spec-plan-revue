@@ -5,6 +5,7 @@ import { BooksService } from '../books/books.service';
 import type { Database } from '../db/database';
 import { DATABASE } from '../db/database.module';
 import { books, loans } from '../db/schema';
+import { getDueDate } from './due-date';
 import { parseCreateLoanInput } from './loans.input';
 
 @Injectable()
@@ -24,9 +25,15 @@ export class LoansService {
     if (!book.isAvailable) {
       throw new ConflictException(`Book ${book.id} is already borrowed`);
     }
+    const borrowedAt = new Date();
     const [loan] = await this.database
       .insert(loans)
-      .values({ bookId: book.id, borrower: input.borrower, borrowedAt: new Date().toISOString() })
+      .values({
+        bookId: book.id,
+        borrower: input.borrower,
+        borrowedAt: borrowedAt.toISOString(),
+        dueDate: getDueDate(borrowedAt),
+      })
       .returning();
     await this.database.update(books).set({ isAvailable: false }).where(eq(books.id, book.id));
     return loan;

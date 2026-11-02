@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS loans (
   book_id INTEGER NOT NULL REFERENCES books(id),
   borrower TEXT NOT NULL,
   borrowed_at TEXT NOT NULL,
+  due_date TEXT NOT NULL,
   returned_at TEXT
 );
 `;

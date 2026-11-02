@@ -18,5 +18,6 @@ export interface Loan {
   bookId: number;
   borrower: string;
   borrowedAt: string;
+  dueDate: string;
   returnedAt: string | null;
 }
