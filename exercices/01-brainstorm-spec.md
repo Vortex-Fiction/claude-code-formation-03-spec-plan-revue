@@ -4,7 +4,7 @@
 
 ## Consignes
 
-1. Installez le plugin si ce n'est pas fait : `/plugin install superpowers@claude-plugins-official`, puis relancez `claude` à la racine du repo.
+1. Installez le plugin si ce n'est pas fait : `/plugin install superpowers@claude-plugins-official`, dans une session `claude` ouverte à la racine du repo. Si le résumé de l'installation dit que le plugin n'est pas actif, lancez `/reload-plugins`.
 2. Lancez le brainstorm :
 
    > Utilise le skill superpowers:brainstorming sur `tickets/feature.md`. Pose-moi une question à la fois. Ne propose pas de code.
@@ -18,6 +18,7 @@
 ## Réussi si
 
 - Chaque question ouverte du ticket a une réponse dans la spec, marquée « Decided » ou « Left to the builder ».
+- La spec répond aussi à au moins une question qui n'est pas dans le ticket (par exemple le fuseau horaire).
 - `Non-goals` reprend la section « Not in this ticket » du ticket.
 - `Anti-goals` dit au moins une chose qui ferait échouer la feature même si les tests passent (par exemple : une base existante qui ne démarre plus).
 - `npm run lint:doc` est vert.

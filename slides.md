@@ -64,7 +64,7 @@ Repo : `claude-code-formation-03-spec-plan-revue`
 - Pas de code tant que la spec n'est pas validée
 - Ce que vous ne voulez pas trancher : vous le dites, et c'est écrit
 
-<!-- Le ticket du repo laisse exprès quatre questions ouvertes. Si le brainstorm ne les fait pas toutes sortir, c'est un signe : relisez le ticket avec Claude. -->
+<!-- Le ticket du repo laisse exprès quatre questions ouvertes. Un bon brainstorm les fait toutes sortir, et au moins une de plus que le ticket ne pose pas, par exemple le fuseau horaire de la date d'échéance. S'il en manque, relisez le ticket avec Claude. -->
 
 ---
 
@@ -123,7 +123,7 @@ Repo : `claude-code-formation-03-spec-plan-revue`
 
 - « Les tests passent » = la sortie de `npm test`
 - « C'est corrigé » = la commande qui le montre
-- « La couverture est à 100 % » = le tableau de `npm run test:coverage`
+- « La couverture est à 100 % » = le résumé de `npm run test:coverage`
 - Pas de « devrait marcher » : on lance, on lit, on cite
 - `superpowers:verification-before-completion`
 
@@ -151,7 +151,7 @@ Repo : `claude-code-formation-03-spec-plan-revue`
 - Pièges : `npm install` dans chaque worktree, les ports fixes, la base locale
 - Utile pour lancer deux agents en parallèle
 
-<!-- Dans ce repo, les ports 3000 et 5173 sont fixes : une seule API à la fois. Arrêtez celle de main avant de lancer celle du worktree. -->
+<!-- Piège de base : par défaut, `claude --worktree` part de la branche par défaut du remote, pas de votre HEAD local. Une spec et un plan commités en local seraient absents. Ce repo met `"worktree": {"baseRef": "head"}` dans `.claude/settings.json`, et la branche s'appelle `worktree-due-dates`. Vérifiez avec `git log --oneline` dans le worktree. Les ports 3000 et 5173 sont fixes : une seule API à la fois. Arrêtez celle de main avant de lancer celle du worktree. -->
 
 ---
 
@@ -187,6 +187,8 @@ Repo : `claude-code-formation-03-spec-plan-revue`
 
 Chaque couche attrape ce que la précédente laisse passer.
 
+<!-- L'ordre compte : la machine d'abord, parce qu'elle ne coûte rien. L'agent ensuite, pour les erreurs qu'il sait voir. L'humain en dernier, sur ce qui reste : le sens, le risque, l'écart à la spec. -->
+
 ---
 
 # Couche 1 : les garde-fous automatiques
@@ -220,6 +222,8 @@ Chaque couche attrape ce que la précédente laisse passer.
 - Des PR petites : une feature, un commit par tâche
 - Lire les tests avant le code : que vérifient-ils vraiment ?
 - Ce qu'on traque dans du code d'agent : diapo suivante
+
+<!-- Votre temps de revue est limité : mettez-le là où une erreur coûte cher. Une migration ratée perd des données, un écran mal aligné se corrige en une minute. Les tests disent ce que l'agent a cru devoir prouver : lisez-les en premier. -->
 
 ---
 
