@@ -11,6 +11,11 @@ export class LoansController {
     return this.loansService.list();
   }
 
+  @Get('overdue')
+  listOverdue(): Promise<Loan[]> {
+    return this.loansService.listOverdue();
+  }
+
   @Post()
   borrow(@Body() body: unknown): Promise<Loan> {
     return this.loansService.borrow(body);

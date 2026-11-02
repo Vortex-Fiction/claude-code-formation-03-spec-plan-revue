@@ -1,21 +1,68 @@
 import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
+import type { Loan } from '@formation/shared';
+import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { BooksService } from '../books/books.service';
-import { createDatabase } from '../db/database';
-import { getDueDate } from './due-date';
+import { createDatabase, type Database } from '../db/database';
+import { loans } from '../db/schema';
+import { getDueDate, toDateOnly } from './due-date';
 import { LoansService } from './loans.service';
 
+const ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
+
 describe('LoansService', () => {
+  let database: Database;
   let booksService: BooksService;
   let loansService: LoansService;
   let bookId: number;
 
   beforeEach(async () => {
-    const database = await createDatabase(':memory:');
+    database = await createDatabase(':memory:');
     booksService = new BooksService(database);
     loansService = new LoansService(database, booksService);
     const [firstBook] = await booksService.list();
     bookId = firstBook.id;
+  });
+
+  async function borrowWithDueDate(dueDate: string): Promise<Loan> {
+    const loan = await loansService.borrow({ bookId, borrower: 'Ada' });
+    await database.update(loans).set({ dueDate }).where(eq(loans.id, loan.id));
+    return loan;
+  }
+
+  function getToday(): string {
+    return toDateOnly(new Date());
+  }
+
+  function getYesterday(): string {
+    return toDateOnly(new Date(Date.now() - ONE_DAY_IN_MILLISECONDS));
+  }
+
+  it('lists a loan whose due date was yesterday as overdue', async () => {
+    const loan = await borrowWithDueDate(getYesterday());
+    expect((await loansService.listOverdue()).map((item) => item.id)).toEqual([loan.id]);
+  });
+
+  it('does not list a loan as overdue on its due date', async () => {
+    await borrowWithDueDate(getToday());
+    expect(await loansService.listOverdue()).toEqual([]);
+  });
+
+  it('does not list a returned loan as overdue', async () => {
+    const loan = await borrowWithDueDate(getYesterday());
+    await loansService.returnLoan(loan.id);
+    expect(await loansService.listOverdue()).toEqual([]);
+  });
+
+  it('lists the overdue loans by due date', async () => {
+    const [, secondBook] = await booksService.list();
+    const laterLoan = await borrowWithDueDate(getYesterday());
+    const earlierLoan = await loansService.borrow({ bookId: secondBook.id, borrower: 'Grace' });
+    await database.update(loans).set({ dueDate: '2026-01-01' }).where(eq(loans.id, earlierLoan.id));
+    expect((await loansService.listOverdue()).map((item) => item.id)).toEqual([
+      earlierLoan.id,
+      laterLoan.id,
+    ]);
   });
 
   it('borrows an available book and marks it unavailable', async () => {

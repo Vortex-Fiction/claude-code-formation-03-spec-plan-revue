@@ -1,11 +1,11 @@
 import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { Loan } from '@formation/shared';
-import { eq } from 'drizzle-orm';
+import { and, asc, eq, isNull, lt } from 'drizzle-orm';
 import { BooksService } from '../books/books.service';
 import type { Database } from '../db/database';
 import { DATABASE } from '../db/database.module';
 import { books, loans } from '../db/schema';
-import { getDueDate } from './due-date';
+import { getDueDate, toDateOnly } from './due-date';
 import { parseCreateLoanInput } from './loans.input';
 
 @Injectable()
@@ -17,6 +17,15 @@ export class LoansService {
 
   list(): Promise<Loan[]> {
     return this.database.select().from(loans);
+  }
+
+  listOverdue(): Promise<Loan[]> {
+    const today = toDateOnly(new Date());
+    return this.database
+      .select()
+      .from(loans)
+      .where(and(isNull(loans.returnedAt), lt(loans.dueDate, today)))
+      .orderBy(asc(loans.dueDate));
   }
 
   async borrow(body: unknown): Promise<Loan> {

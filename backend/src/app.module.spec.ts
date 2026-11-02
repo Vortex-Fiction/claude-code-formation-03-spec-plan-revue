@@ -2,16 +2,20 @@ import 'reflect-metadata';
 import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import type { Author, Book, BookWithAuthor, Loan } from '@formation/shared';
+import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { AppModule } from './app.module';
-import { createDatabase } from './db/database';
+import { createDatabase, type Database } from './db/database';
 import { DATABASE } from './db/database.module';
+import { loans } from './db/schema';
 
+const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_BAD_REQUEST = 400;
 const HTTP_NOT_FOUND = 404;
 const HTTP_CONFLICT = 409;
 const ANY_FREE_PORT = 0;
+const PAST_DUE_DATE = '2026-01-01';
 
 describe('AppModule over HTTP', () => {
   let app: INestApplication;
@@ -72,8 +76,8 @@ describe('AppModule over HTTP', () => {
     const borrowed = await post('/loans', { bookId: firstBook.id, borrower: 'Ada' });
     expect(borrowed.status).toBe(HTTP_CREATED);
     const loan: Loan = await borrowed.json();
-    const loans: Loan[] = await (await get('/loans')).json();
-    expect(loans.map((item) => item.id)).toEqual([loan.id]);
+    const listedLoans: Loan[] = await (await get('/loans')).json();
+    expect(listedLoans.map((item) => item.id)).toEqual([loan.id]);
     const returned = await post(`/loans/${loan.id}/return`);
     expect(returned.status).toBe(HTTP_CREATED);
     const returnedLoan: Loan = await returned.json();
@@ -88,6 +92,19 @@ describe('AppModule over HTTP', () => {
     );
     expect((await post('/loans', { borrower: 'Ada' })).status).toBe(HTTP_BAD_REQUEST);
     expect((await post('/loans/999/return')).status).toBe(HTTP_NOT_FOUND);
+  });
+
+  it('lists the overdue loans', async () => {
+    const firstBook = await getFirstBook();
+    const loan: Loan = await (
+      await post('/loans', { bookId: firstBook.id, borrower: 'Ada' })
+    ).json();
+    const database = app.get<Database>(DATABASE);
+    await database.update(loans).set({ dueDate: PAST_DUE_DATE }).where(eq(loans.id, loan.id));
+    const response = await get('/loans/overdue');
+    expect(response.status).toBe(HTTP_OK);
+    const overdueLoans: Loan[] = await response.json();
+    expect(overdueLoans).toEqual([{ ...loan, dueDate: PAST_DUE_DATE }]);
   });
 
   it('rejects a loan id that is not an integer', async () => {
