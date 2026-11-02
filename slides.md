@@ -163,7 +163,7 @@ Repo : `claude-code-formation-03-spec-plan-revue`
 - **Pas** pour trois commandes que vous lanceriez vous-même
 - Chaque délégation perd du détail et coûte des tokens
 
-<!-- Le sous-agent ne voit que votre prompt, et vous ne voyez que son rapport. Ses erreurs reviennent avec la même assurance que ses trouvailles. -->
+<!-- Le sous-agent ne voit pas la conversation : seulement le message de délégation et les `CLAUDE.md` (un fork, lui, hérite de la conversation). Vous ne voyez que son rapport. Ses erreurs reviennent avec la même assurance que ses trouvailles. -->
 
 ---
 
@@ -193,7 +193,7 @@ Chaque couche attrape ce que la précédente laisse passer.
 
 # Couche 1 : les garde-fous automatiques
 
-- Lint, build, tests : `npm run lint`, `npm test`
+- Lint, typage, tests : `npm run lint`, `npm test`
 - Couverture à 100 % : `npm run test:coverage`
 - Pas de mocks : une vraie base en mémoire
 - Vulnérabilités : `npm audit --omit=dev`
