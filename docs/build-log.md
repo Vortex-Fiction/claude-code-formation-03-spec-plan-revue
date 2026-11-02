@@ -13,3 +13,7 @@ This repo was built with Claude Code from a written plan. Each entry is the inst
 ## Task 3 — Add the phase 3 exercises
 
 > Write four exercises in French under `exercices/`: brainstorm the ticket into a spec with `superpowers:brainstorming`, write the plan with `superpowers:writing-plans`, execute it in a worktree with TDD and one commit per task, then review in three layers and open the pull request on the fork. Each exercise ends with clear success criteria. The lint and Git ignore a worktree under `.claude/worktrees/`.
+
+## Task 4 — Add the phase 3 slides
+
+> Write `slides.md` for Marp, in French, about 25 slides in the order of the phase 3 outline: the cycle, the spec, the plan, TDD, proof before claims, Git, worktrees, subagents, the three review layers and the hunt list. At most 5 bullets per slide, speaker notes on the theory slides. Render to PNG and check that no text overflows.
