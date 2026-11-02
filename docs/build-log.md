@@ -17,3 +17,7 @@ This repo was built with Claude Code from a written plan. Each entry is the inst
 ## Task 4 — Add the phase 3 slides
 
 > Write `slides.md` for Marp, in French, about 25 slides in the order of the phase 3 outline: the cycle, the spec, the plan, TDD, proof before claims, Git, worktrees, subagents, the three review layers and the hunt list. At most 5 bullets per slide, speaker notes on the theory slides. Render to PNG and check that no text overflows.
+
+## Task 5 — Deliver the feature on the `solution` branch
+
+> On a `solution` branch only: write the spec and the plan of the ticket in STE, with reasonable answers marked "Decided". Then execute the plan with TDD, one commit per task. Write the test of the migration on a database with the schema of `main` first, and see it fail. `npm test`, `npm run test:coverage`, `npm run lint` and `npm run lint:doc` are green. `npm run back` on a database that `main` created answers on the overdue route.
