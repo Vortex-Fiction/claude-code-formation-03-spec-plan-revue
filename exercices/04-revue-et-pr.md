@@ -20,7 +20,7 @@ npm audit --omit=dev
 
 ### Couche 2 — l'agent se relit
 
-1. Dans la session, lancez `/code-review main...HEAD` : la revue couvre tous les commits de la branche, pas seulement les changements non commités.
+1. Dans la session, lancez `/code-review main...HEAD` : la revue couvre tous les commits de la branche depuis `main`, ceux des tâches du plan.
 2. Pour chaque point trouvé, demandez à Claude de le vérifier (relire le code, écrire un test qui le montre) avant de corriger. Il a le droit de contester un point, avec une preuve.
 
 ### Couche 3 — vous relisez l'agent
