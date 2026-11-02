@@ -9,3 +9,7 @@ This repo was built with Claude Code from a written plan. Each entry is the inst
 ## Task 2 — Add the coverage gate and the phase 3 feature ticket
 
 > Add `npm run test:coverage`: Vitest with v8 on `backend/src`, 100 % for lines, branches, functions and statements. Do not count `main.ts`, the specs and the seed. When the gate fails, add the missing tests, not exclusions. Write `tickets/feature.md` about due dates and overdue loans: a clear need, and real open questions for the brainstorm. Add empty `docs/superpowers/specs/` and `docs/superpowers/plans/` folders. `npm run lint:doc` also checks the ticket, the specs and the plans.
+
+## Task 3 — Add the phase 3 exercises
+
+> Write four exercises in French under `exercices/`: brainstorm the ticket into a spec with `superpowers:brainstorming`, write the plan with `superpowers:writing-plans`, execute it in a worktree with TDD and one commit per task, then review in three layers and open the pull request on the fork. Each exercise ends with clear success criteria. The lint and Git ignore a worktree under `.claude/worktrees/`.
