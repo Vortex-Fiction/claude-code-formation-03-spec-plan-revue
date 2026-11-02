@@ -9,14 +9,14 @@
 
    > Utilise le skill superpowers:writing-plans sur `docs/superpowers/specs/<votre-spec>.md`. Écris le plan dans `docs/superpowers/plans/`, en anglais et en STE.
 
-3. Exigez pour chaque tâche : les fichiers touchés, le test écrit d'abord (son nom et ce qu'il vérifie), la commande qui le montre en échec puis en succès, le message de commit.
+3. Exigez pour chaque tâche : les fichiers touchés, le test écrit d'abord (son nom et ce qu'il vérifie), la commande qui le montre en échec puis en succès, le message de commit. L'écran n'a pas de tests : sa tâche dit quoi vérifier dans le navigateur.
 4. Exigez les interfaces : la signature des fonctions, la forme du JSON de chaque route, le type partagé dans `libs/shared`.
 5. Exigez une tâche pour la base existante : la migration, avec son test sur une base créée par le schéma de `main`.
 6. `npm run lint:doc` doit être vert. Commitez le plan : `docs(plan): Add the due dates plan`.
 
 ## Réussi si
 
-- Chaque tâche a son test, ses fichiers et son commit.
+- Chaque tâche a ses fichiers et son commit : chaque commit backend contient son code et ses tests ; le commit de l'écran est vérifié dans le navigateur.
 - Aucune tâche « TBD », « à définir » ou « gérer les erreurs » sans dire lesquelles.
 - Chaque ligne de `Decided` de la spec se retrouve dans au moins une tâche.
 - Un collègue peut exécuter le plan sans vous poser de question.

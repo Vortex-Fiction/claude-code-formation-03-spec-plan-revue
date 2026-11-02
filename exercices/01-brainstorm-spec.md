@@ -4,7 +4,7 @@
 
 ## Consignes
 
-1. Installez le plugin si ce n'est pas fait : `/plugin install superpowers@claude-plugins-official`, dans une session `claude` ouverte à la racine du repo. Si le résumé de l'installation dit que le plugin n'est pas actif, lancez `/reload-plugins`.
+1. Installez le plugin si ce n'est pas fait : `/plugin install superpowers@claude-plugins-official`, dans une session `claude` ouverte à la racine du repo. Choisissez « Install for you ». Le résumé de l'installation finit par `Plugin is now active.`, ou Claude Code recharge les plugins pour vous. S'il avertit que le plugin reste en attente (à cause du cache), lancez `/reload-plugins --force`.
 2. Lancez le brainstorm :
 
    > Utilise le skill superpowers:brainstorming sur `tickets/feature.md`. Pose-moi une question à la fois. Ne propose pas de code.
@@ -13,7 +13,7 @@
 4. Demandez la spec dans `docs/superpowers/specs/`, en anglais et en STE, avec ces sections : `Intent`, `Goals`, `Non-goals`, `Anti-goals`, `Decided`, `Left to the builder`.
 5. Arrêtez-vous à la spec. Quand Claude propose de passer au plan, refusez : le plan, c'est l'exercice 2, dans une session neuve.
 6. `npm run lint:doc` doit être vert : il vérifie aussi `docs/superpowers/`.
-7. Relisez la spec vous-même, puis commitez-la : `docs(spec): Add the due dates design`.
+7. Relisez la spec vous-même, puis vérifiez avec `git log --oneline` qu'elle est commitée : `docs(spec): Add the due dates design` (commitez-la sinon).
 
 ## Réussi si
 

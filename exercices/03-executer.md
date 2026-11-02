@@ -12,7 +12,7 @@
 4. Avant la première tâche, lancez une fois `npm run back` et `npm run front`, chacun dans un autre terminal ouvert dans le dossier du worktree (la session Claude garde le premier). Empruntez un livre, puis arrêtez les deux. Vous avez maintenant une base créée par `main`, comme celle d'un utilisateur.
 5. Lancez l'exécution :
 
-   > Exécute le plan `docs/superpowers/plans/<votre-plan>.md` avec le skill superpowers:executing-plans. Une tâche = un commit. Pour chaque test, montre-moi la sortie en échec, puis en succès.
+   > Exécute le plan `docs/superpowers/plans/<votre-plan>.md` avec le skill superpowers:executing-plans. Une tâche = un commit. Pour chaque test, montre-moi la sortie en échec, puis en succès. Arrête-toi après chaque commit et attends mon feu vert.
 
    Variante : `superpowers:subagent-driven-development` confie chaque tâche à un sous-agent et relit entre deux tâches.
 
@@ -21,7 +21,7 @@
 
 ## Réussi si
 
-- Il y a un commit par tâche du plan, et chaque commit contient son code et ses tests.
+- Il y a un commit par tâche du plan : chaque commit backend contient son code et ses tests ; le commit de l'écran est vérifié dans le navigateur.
 - Chaque « les tests passent » de Claude vient avec la sortie de la commande : citée, pas affirmée.
 - `npm run test:coverage` reste à 100 %.
 - `git log --oneline` du worktree part des commits de la spec et du plan.
