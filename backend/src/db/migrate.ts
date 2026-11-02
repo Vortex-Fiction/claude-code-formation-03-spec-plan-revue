@@ -10,11 +10,22 @@ export async function migrateDatabase(client: Client): Promise<void> {
   if (await hasColumn(client, 'loans', 'due_date')) {
     return;
   }
-  await client.batch(
-    [
-      'ALTER TABLE loans ADD COLUMN due_date TEXT',
+  const transaction = await client.transaction('write');
+  try {
+    await transaction.execute('ALTER TABLE loans ADD COLUMN due_date TEXT');
+    await transaction.execute(
       `UPDATE loans SET due_date = date(borrowed_at, '+${LOAN_DURATION_DAYS} days')`,
-    ],
-    'write',
-  );
+    );
+    const loansWithoutDueDate = await transaction.execute(
+      'SELECT id FROM loans WHERE due_date IS NULL',
+    );
+    if (loansWithoutDueDate.rows.length > 0) {
+      throw new Error(
+        `Migration failed: ${loansWithoutDueDate.rows.length} loan(s) have no due date`,
+      );
+    }
+    await transaction.commit();
+  } finally {
+    transaction.close();
+  }
 }

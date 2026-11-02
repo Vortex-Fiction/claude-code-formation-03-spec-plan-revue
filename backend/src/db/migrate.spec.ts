@@ -39,13 +39,29 @@ INSERT INTO loans (book_id, borrower, borrowed_at, returned_at)
   VALUES (2, 'Grace', '2026-10-06T23:45:00.000Z', '2026-10-25T10:00:00.000Z');
 `;
 
-async function createMainDatabase(): Promise<string> {
+const UNPARSABLE_LOAN_SQL = `
+INSERT INTO loans (book_id, borrower, borrowed_at, returned_at)
+  VALUES (2, 'Alan', 'not a date', NULL);
+`;
+
+async function createDatabaseFile(sql: string): Promise<string> {
   const folder = mkdtempSync(path.join(os.tmpdir(), 'library-main-'));
   const url = pathToFileURL(path.join(folder, 'library.db')).href;
   const client = createClient({ url });
-  await client.executeMultiple(MAIN_CREATE_TABLES_SQL);
+  await client.executeMultiple(sql);
   client.close();
   return url;
+}
+
+async function createMainDatabase(): Promise<string> {
+  return createDatabaseFile(MAIN_CREATE_TABLES_SQL);
+}
+
+async function hasDueDateColumn(url: string): Promise<boolean> {
+  const client = createClient({ url });
+  const result = await client.execute('PRAGMA table_info(loans)');
+  client.close();
+  return result.rows.some((row) => row.name === 'due_date');
 }
 
 describe('migrateDatabase', () => {
@@ -68,5 +84,11 @@ describe('migrateDatabase', () => {
     await createDatabase(url);
     const database = await createDatabase(url);
     expect(await database.select().from(loans)).toHaveLength(2);
+  });
+
+  it('fails and leaves the database unchanged when a loan gets no due date', async () => {
+    const url = await createDatabaseFile(MAIN_CREATE_TABLES_SQL + UNPARSABLE_LOAN_SQL);
+    await expect(createDatabase(url)).rejects.toThrow('1 loan(s) have no due date');
+    expect(await hasDueDateColumn(url)).toBe(false);
   });
 });
