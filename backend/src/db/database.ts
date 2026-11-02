@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { createClient } from '@libsql/client';
 import { drizzle, type LibSQLDatabase } from 'drizzle-orm/libsql';
 import { CREATE_TABLES_SQL } from './create-tables';
+import { migrateDatabase } from './migrate';
 import * as schema from './schema';
 import { seedDatabase } from './seed';
 
@@ -25,6 +26,7 @@ export async function createDatabase(url: string): Promise<Database> {
   }
   const client = createClient({ url });
   await client.executeMultiple(CREATE_TABLES_SQL);
+  await migrateDatabase(client);
   const database = drizzle(client, { schema });
   await seedDatabase(database);
   return database;

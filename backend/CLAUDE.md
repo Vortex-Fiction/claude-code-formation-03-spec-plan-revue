@@ -14,6 +14,7 @@
 - New entity → add its controller and its service to `AppModule` in `src/app.module.ts`.
 - New table → `src/db/schema.ts` and `src/db/create-tables.ts`. `src/db/schema.spec.ts` checks that the two agree.
 - New route → an HTTP test in `src/app.module.spec.ts`.
+- Change to an existing table → a step in `src/db/migrate.ts`, with a test on a database of the previous schema in `src/db/migrate.spec.ts`.
 
 ## Checks before done
 
