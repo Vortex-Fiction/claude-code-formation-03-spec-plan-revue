@@ -46,6 +46,10 @@ export function listLoans(): Promise<Loan[]> {
   return request('/api/loans');
 }
 
+export function listOverdueLoans(): Promise<Loan[]> {
+  return request('/api/loans/overdue');
+}
+
 export function borrowBook(bookId: number, borrower: string): Promise<Loan> {
   return request('/api/loans', { method: 'POST', body: JSON.stringify({ bookId, borrower }) });
 }
