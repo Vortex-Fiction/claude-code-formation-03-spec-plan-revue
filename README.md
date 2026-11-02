@@ -60,11 +60,14 @@ The SQLite database is created in `backend/data/` on the first `npm run back`. T
 
 ```bash
 npm test
+npm run test:coverage
 npm run lint
 npm run lint:doc
 ```
 
-`npm run lint:doc` checks each `README.md` and `CLAUDE.md` with Vale and the Simplified Technical English rules in `.vale/`. `npm install` downloads Vale. If `npm run lint:doc` tells you that Vale is missing, run `npm rebuild @vvago/vale`.
+`npm run test:coverage` runs the backend tests with coverage. It fails when lines, branches, functions or statements go below 100 %. It does not count `main.ts`, `db/database.module.ts` and `db/seed.ts`: `npm run back` runs them.
+
+`npm run lint:doc` checks each `README.md` and `CLAUDE.md`, the tickets in `tickets/`, and the specs and plans in `docs/superpowers/` with Vale and the Simplified Technical English rules in `.vale/`. `npm install` downloads Vale. If `npm run lint:doc` tells you that Vale is missing, run `npm rebuild @vvago/vale`.
 
 ## Open a pull request
 

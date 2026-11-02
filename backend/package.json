@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node scripts/dev.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@formation/shared": "*",
@@ -18,7 +19,9 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@nestjs/testing": "^12.3.2",
     "@types/node": "^22.19.15",
+    "@vitest/coverage-v8": "^4.1.12",
     "esbuild": "^0.28.2",
     "typescript": "~6.0.3",
     "vitest": "^4.1.12"

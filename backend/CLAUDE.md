@@ -12,7 +12,8 @@
 
 - New entity → `src/<entity>/`: `<entity>.input.ts`, `<entity>.service.ts`, `<entity>.controller.ts`, `<entity>.service.spec.ts`.
 - New entity → add its controller and its service to `AppModule` in `src/app.module.ts`.
-- New table → `src/db/schema.ts` and `src/db/create-tables.ts`.
+- New table → `src/db/schema.ts` and `src/db/create-tables.ts`. `src/db/schema.spec.ts` checks that the two agree.
+- New route → an HTTP test in `src/app.module.spec.ts`.
 
 ## Checks before done
 
